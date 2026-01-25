@@ -1,6 +1,7 @@
 package stockage;
 
 
+import java.util.Collection;
 
 public class Principale
 {
@@ -79,7 +80,7 @@ public class Principale
     File f = new File("Martini.class","martini") ;
     File f2 = new File("Ricard","ricard") ;
     Directory d2 = new Directory("Eau") ;
-    File f3 = new File("GlaÃ§ons.class","glaÃ§ons") ;
+    File f3 = new File("Glaçons.class","glaçons") ;
 
     d.add(f) ;
     d.add(f2) ;
@@ -98,5 +99,77 @@ public class Principale
 
     d.ls();
     d2.ls();
+
+    // ==========================================================
+    // 1) Test RazVisitor : vider tous les fichiers (dans l'arbre)
+    // ==========================================================
+    RazVisitor raz = new RazVisitor();
+    d.accept(raz);
+
+    System.out.println("\n=== APRES RazVisitor (tout vidé) ===");
+    System.out.println("taille " + f.name  + " : " + f.size());
+    System.out.println("taille " + f2.name + " : " + f2.size());
+    System.out.println("taille " + f3.name + " : " + f3.size());
+    System.out.println("taille " + f4.name + " : " + f4.size() + " (non attaché donc inchangé)");
+
+    // On remet un peu de contenu pour les tests suivants
+    f.setContents("12345678901");   // 11
+    f2.setContents("abc");          // 3
+    f3.setContents("0123456789012");// 13
+
+    // ==========================================================
+    // 2) Test CountVisitor : nb de fichiers dont size > 10
+    // ==========================================================
+    CountVisitor cv = new CountVisitor();
+    d.accept(cv);
+    System.out.println("\n=== CountVisitor (>10) ===");
+    System.out.println("count = " + cv.getCount()); // attendu : 2 (Martini.class + Glaçons.class)
+
+    // ==========================================================
+    // 3) Test CountVisitor2 (lambda) : ex fichiers suffixe ".class"
+    // ==========================================================
+    CountVisitor2 cv2 = new CountVisitor2(file -> file.getName().endsWith(".class"));
+    d.accept(cv2);
+    System.out.println("\n=== CountVisitor2 (suffixe .class) ===");
+    System.out.println("count = " + cv2.getCount()); // attendu : 2
+
+    // Autre exemple : fichiers vides
+    CountVisitor2 cvEmpty = new CountVisitor2(file -> file.size() == 0);
+    d.accept(cvEmpty);
+    System.out.println("\n=== CountVisitor2 (vides) ===");
+    System.out.println("count = " + cvEmpty.getCount());
+
+    // ==========================================================
+    // 4) Test FindVisitor : adresses absolues des elements nommés "Eau"
+    // ==========================================================
+    FindVisitor fv = new FindVisitor();
+    fv.find("Eau");
+    d.accept(fv);
+
+    System.out.println("\n=== FindVisitor (name = \"Eau\") ===");
+    // si tu as getResults() :
+    // Collection<String> res = fv.getResults();
+    // sinon, si results est renvoyé directement par findFrom(...) adapte
+    Collection<String> res = fv.getResults(); // <-- ajoute ce getter si tu l'as pas
+    for (String s : res) {
+      System.out.println(s);
+    }
+
+    // ==========================================================
+    // 5) Test JavaCleanVisitor : supprimer les fichiers ".class"
+    // ==========================================================
+    System.out.println("\n=== AVANT JavaCleanVisitor ===");
+    d.ls();
+
+    JavaCleanVisitor clean = new JavaCleanVisitor();
+    d.accept(clean);
+
+    System.out.println("\n=== APRES JavaCleanVisitor (suppression .class) ===");
+    d.ls();
+    System.out.println("taille Pastis : " + d.size());
+
+
   }
+
+
 }
