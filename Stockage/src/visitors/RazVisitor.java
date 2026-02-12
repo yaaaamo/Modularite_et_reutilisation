@@ -1,6 +1,8 @@
-package stockage;
+package stockage.visitors;
 
-public class RazVisitor extends Visitor{
+import stockage.*;
+
+public class RazVisitor extends Visitor {
   @Override
   protected void visitDirectory(Directory d) {
     // Parcours récursif : on visite tous les enfants

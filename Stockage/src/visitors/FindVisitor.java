@@ -1,6 +1,8 @@
-package stockage;
+package stockage.visitors;
 
 
+
+import stockage.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

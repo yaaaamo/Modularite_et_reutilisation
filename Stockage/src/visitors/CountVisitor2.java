@@ -1,4 +1,6 @@
-package stockage;
+package stockage.visitors;
+
+import stockage.*;
 
 import java.util.function.Predicate;
 

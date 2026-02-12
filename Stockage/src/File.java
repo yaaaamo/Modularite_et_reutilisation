@@ -34,7 +34,6 @@ public class File extends ElementStockage
     contenu = c ;
   }
   //
-  @Override
   public void accept(Visitor v){
     v.visitFile(this);
   }

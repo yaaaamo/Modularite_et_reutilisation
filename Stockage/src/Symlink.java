@@ -35,7 +35,7 @@ public class Symlink extends ElementStockage
     System.out.println("ln -s "+reference.absoluteAdress()+" "+name) ;
   }
 
-  @Override
+
   public void accept(Visitor v) {
     v.visitSymlink(this);
   }

@@ -1,5 +1,7 @@
-package stockage;
+package stockage.visitors;
 
+
+import stockage.*;
 
 import java.util.Iterator;
 

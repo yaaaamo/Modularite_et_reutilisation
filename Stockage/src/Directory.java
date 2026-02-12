@@ -129,9 +129,12 @@ public class Directory extends ElementStockage
   }
 
   //
-  @Override
   public void accept(Visitor v){
+    // voir code page 338 (gof) de la description du pattern
     v.visitDirectory(this);
+    for(ElementStockage s : elements){
+      s.accept(v);
+    }
   }
 
 

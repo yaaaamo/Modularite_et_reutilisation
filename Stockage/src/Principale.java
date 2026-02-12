@@ -1,6 +1,8 @@
 package stockage;
 
 
+import stockage.visitors.*;
+
 import java.util.Collection;
 
 public class Principale
